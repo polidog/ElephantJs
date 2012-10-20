@@ -26,7 +26,7 @@ Macで使う場合
 
 これで実行すれば、以下のように出力されます  
 
-	a
+	ElephantJs samples string a
 
 ファイルから実行したい場合は
 
