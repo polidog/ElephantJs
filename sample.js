@@ -1,0 +1,1 @@
+print(PHP.vars.local.a + "\n");
