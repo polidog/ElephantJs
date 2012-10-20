@@ -2,10 +2,14 @@
 
 ElephantJsは、PHPからJavascritpを実行するためのライブラリです。  
 使用するためにはV8Jsが必要です。
+それから、もちろんV8エンジンも必要なわけです。   
 
+Macで使う場合
 
-	pecl install v8js
+	brew install v8
+	pecl install v8js-0.1.3
   
+	
 
 
 ### 使い方
