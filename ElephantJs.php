@@ -41,7 +41,7 @@ class ElephantJs {
 	 * @var stdClass
 	 */
 	protected $phpVars = null;
-	
+
 	/**
 	 * PHPオブジェクトに付け加えるjsのメソッドとか値とか
 	 * @var array 
@@ -107,20 +107,18 @@ class ElephantJs {
 			}
 		}
 	}
-	
-	
+
 	/**
 	 * JSを動的に追加する
 	 * @param mixed $key array | string
 	 * @param string $value 
 	 */
 	public function attachJs($key, $value = null) {
-		if ( is_array($key) && is_null($value) ) {
-			foreach ( $key as $k => $v ) {
-				$this->attachJs($k,$v);
+		if (is_array($key) && is_null($value)) {
+			foreach ($key as $k => $v) {
+				$this->attachJs($k, $v);
 			}
-		}
-		else {
+		} else {
 			$this->attachJs[$key] = $value;
 		}
 	}
@@ -141,12 +139,12 @@ class ElephantJs {
 		$js = 'var PHP = { varsion: "' . PHP_VERSION . '",vars:{global:%s,local:%s}};';
 		$js .= 'PHP.getVars = function(key,type) { if ( this.vars[type][key] !== undefined ) { return this.vars[type][key]} };';
 
-		if ( !empty( $this->attachJs ) ) {
-			foreach ( $this->attachJs as $key => $value ) {
+		if (!empty($this->attachJs)) {
+			foreach ($this->attachJs as $key => $value) {
 				$js .= "PHP.{$key} = {$value}";
 			}
 		}
-		
+
 		if (empty($this->phpVars->global)) {
 			$global = "{}";
 		} else {
@@ -195,35 +193,6 @@ class ElephantJs {
 
 		$this->phpVars->local = $phpVars;
 		return $this;
-	}
-
-	/**
-	 * ファイルの中身を取得する
-	 * @param string $path
-	 * @return mixed [bool|string] 
-	 */
-	protected function getJsContent($path, $isEval = false, $params = array()) {
-
-		extract($params);
-		if (!file_exists($path)) {
-			return false;
-		}
-
-		$content = file_get_contents($path);
-		if ($isEval) {
-			return eval($content);
-		}
-		return $content;
-	}
-
-	protected function debugLog($message) {
-		$this->output($message, 'debug');
-	}
-
-	protected function output($message, $prefix, $html = false) {
-		if (!$html) {
-			echo "[{$prefix}]" . $message . "\n";
-		}
 	}
 
 }
