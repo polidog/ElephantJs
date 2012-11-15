@@ -76,16 +76,18 @@ class ElephantJs {
 	/**
 	 * 実行したいJavascriptのstringを渡して実行する
 	 * @param string $jsString  
+	 * @return mixed jsの実行結果
 	 */
 	public function execute($jsString) {
 		$_execJsString = $this->createJsObject();
 		$_execJsString .= "\n" . $jsString;
-		$this->v8Engine->executeString($_execJsString);
+		return $this->v8Engine->executeString($_execJsString);
 	}
 
 	/**
 	 * Jsファイルを実行する
-	 * @param array $files 
+	 * @param array $files ファイル名配列
+	 * @return array 実行結果配列
 	 */
 	public function executeFile($fileNames, $basePath = null) {
 		if (!is_null($fileNames)) {
@@ -100,12 +102,14 @@ class ElephantJs {
 			$basePath = dirname(__FILE__);
 		}
 
+		$results = array();
 		foreach ($fileNames as $file) {
 			$path = $basePath . DIRECTORY_SEPARATOR . $file;
 			if (file_exists($path)) {
-				$this->execute(file_get_contents($path));
+				$results[$file] =  $this->execute(file_get_contents($path));
 			}
 		}
+		return $results;
 	}
 
 	/**
