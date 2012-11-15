@@ -142,7 +142,7 @@ class ElephantJs {
 	protected function createJsObject() {
 		$js = 'var PHP = { varsion: "' . PHP_VERSION . '",vars:{global:%s,local:%s}};';
 		$js .= 'PHP.getVars = function(key,type) { if ( this.vars[type][key] !== undefined ) { return this.vars[type][key]} };';
-
+		$js .= 'console = {}; console.log = function(s) { print(s); };';
 		if (!empty($this->attachJs)) {
 			foreach ($this->attachJs as $key => $value) {
 				$js .= "PHP.{$key} = {$value}";
