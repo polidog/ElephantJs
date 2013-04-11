@@ -31,32 +31,73 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>Welcome to GitHub Pages.</h3>
+        <h1>ElephantJs</h1>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p><img src="http://www.polidog.jp/images/zou.gif" alt="zou"></p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<p>ElephantJsは、PHPからJavascritpを実行するためのライブラリです。<br>
+使用するためにはV8Jsが必要です。
+それから、もちろんV8エンジンも必要なわけです。   </p>
+
+<p>Macで使う場合</p>
+
+<pre><code>brew install v8
+pecl install v8js-0.1.3
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<h3>使い方</h3>
 
-<h3>Designer Templates</h3>
+<hr><pre><code>require 'ElephantJs.php';
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+$a = "ElephantJs samples string a";
 
-<h3>Rather Drive Stick?</h3>
+// 普通に動かす
+$jsElephant = new ElephantJs(get_defined_vars());
+$jsElephant-&gt;execute('print(PHP.getVars("a","local") + "\n");');
+</code></pre>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>これで実行すれば、以下のように出力されます  </p>
 
-<h3>Authors and Contributors</h3>
+<pre><code>ElephantJs samples string a
+</code></pre>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>ファイルから実行したい場合は</p>
 
-<h3>Support or Contact</h3>
+<pre><code>require 'ElephantJs.php';
+$jsElephant = new ElephantJs(get_defined_vars());
+$jsElephant-&gt;executeFile('sample.js');
+</code></pre>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>とファイル名を指定すれば実行できます。<br>
+実行したいディレクトリが別の場所の場合は指定することもできます。  </p>
+
+<pre><code>require 'ElephantJs.php';
+$jsElephant = new ElephantJs(get_defined_vars());
+$jsElephant-&gt;executeFile('sample.js','/var/www/html/js');
+</code></pre>
+
+<p><em>注意</em> コンストラクタで必ずget_defined_vars()を引数として実行しないとローカルスコープの変数が取得できません。</p>
+
+<h4>Javascriptオブジェクトについて</h4>
+
+<hr><p>ElephantJsで実行した場合にPHPという変数名でJavascript側にオブジェクトが渡されます。<br>
+今のところメソッドは以下のものを用意しています。</p>
+
+<pre><code>PHP.getVars('変数名','local'); // 第二引数はlocal or globalを指定する
+</code></pre>
+
+<p>PHP.getVars()を実行することによりPHP側の変数を取得する事ができます。 
+あと実行しているPHPのバージョンを取得したい場合は、PHP.versionで取得できます。</p>
+
+<p>ちなみに、メソッドが足りない場合にPHP側からメソッドを動的に増やす事も出来ます。</p>
+
+<p>例:printlnを追加する  </p>
+
+<pre><code>$jsElephant-&gt;attachJs(array(
+    'println' =&gt; 'function(key) { print( key + "\n") };'
+));
+$jsElephant-&gt;execute('PHP.println("これはJavascriptです。うそではないです。");');
+</code></pre>
       </section>
     </div>
 
